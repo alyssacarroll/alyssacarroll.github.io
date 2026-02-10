@@ -1,0 +1,9 @@
+{% extends "quiz_template.html" %}
+{% block content %}
+    <h2>What's your name?</h2>
+    <form method=""POST" action="/quiz/weight">
+        <input class="form-control" type="text" name="user" placeholder="Default input" aria-label="default input example">
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+    </form> 
+
+{% endblock %}
