@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Products{% endblock %}
+
+{% block content %}
+    <h1>Product</h1>
+
+    {% if products %}
+        {% for p in products %}
+            {% if p["Caffeine Anhydrous"] is not none and p["Caffeine Anhydrous"]|int == caffeine|int %}
+             <p>{{ p["Product Name"] }}</p>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>No product found.</p>
+    {% endif %}
+
+{% endblock %}
