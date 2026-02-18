@@ -7,7 +7,7 @@
 
     {% if products %}
         {% for p in products %}
-            {% if p["Caffeine Anhydrous"] is not none and p["Caffeine Anhydrous"]|int == caffeine|int %}
+            {% if p["Caffeine Blend"] is not none and p["Caffeine Blend"]|int == caffeine|int %}
              <p>{{ p["Product Name"] }}</p>
             {% endif %}
         {% endfor %}

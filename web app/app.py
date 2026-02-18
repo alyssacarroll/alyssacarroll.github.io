@@ -4,17 +4,9 @@ import mysql.connector
 app = Flask(__name__)
 app.secret_key = "key"
 
-def check_db_connection():
-    try:
-        conn = mysql.connector.connect(
-            host='localhost',
-            user="root",
-            password="password",
-            database='mydb'
-        )
-        return True
-    except mysql.connector.Error as e:
-        return False
+DB_NAME = "dlsd_preworkout_products"
+DB_PASSWORD = "password"
+
 
 # <><><> MAIN PAGE <><><>
 @app.route("/")
@@ -81,12 +73,12 @@ def products():
     conn = mysql.connector.connect(
        host="localhost",
        user="root",
-       password="password",
-       database="preworkout_products"
+       password=DB_PASSWORD,
+       database=DB_NAME
     )
     cur = conn.cursor(dictionary=True)  # cursor that collects data
 
-    cur.execute("SELECT * FROM preworkout_data")
+    cur.execute("SELECT * FROM preworkout_powders")
     products = cur.fetchall()
 
     # close database connection
@@ -95,7 +87,7 @@ def products():
 
     return render_template("products.html",
                             products=products,
-                            caffeine=session.get("caffeine")
+                            caffeine=session.get("Caffeine Blend")
     )
 
 if __name__ == "__main__":

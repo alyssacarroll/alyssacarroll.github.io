@@ -10,6 +10,9 @@ import json
 BASE = "https://api.ods.od.nih.gov/dsld/v9"
 HEADERS = {"Accept": "application/json"}
 
+DB_NAME = "dsld_preworkout_products"
+DB_PASSWORD = "password"
+
 SEARCH_TERMS = [
     '"pre workout"', '"pre-workout"', 'preworkout', '"pump"'
 ]
@@ -18,8 +21,8 @@ def get_db():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="password",
-        database="mydb",
+        password=DB_PASSWORD,
+        database=DB_NAME,
     )
 
 def ensure_tables(conn):
