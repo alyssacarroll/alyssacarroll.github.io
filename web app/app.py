@@ -8,12 +8,12 @@ DB_NAME = "dlsd_preworkout_products"
 DB_PASSWORD = "password"
 
 
-# <><><> MAIN PAGE <><><>
+# <><><><><><><><><><><><><> MAIN PAGE <><><><><><><><><><><><><><><><>
 @app.route("/")
 def home():
     return render_template("home.html")
 
-# <><><> QUIZ PAGES <><><>
+# <><><><><><><><><><><><><> QUIZ PAGES <><><><><><><><><><><><><><><>
 @app.route("/quiz")
 def quiz():
     return render_template("quiz_template.html",
@@ -32,7 +32,18 @@ def name():
         session["user"] = request.form.get("user", "").strip()  # get name from form and store in session
         return redirect(url_for('weight'))  # redirect to weight question page
     return render_template("qName.html", 
-                           usr=session.get("user"))
+                           usr=session.get("user"))  
+   
+
+#TODO
+def age():
+    return -1
+    
+    
+# TODO
+def sex():
+    return -1
+
 
 @app.route("/quiz/weight", methods=["GET", "POST"])
 def weight():
@@ -43,8 +54,22 @@ def weight():
         return redirect(url_for('caffeine'))
     return render_template("qWeight.html", 
                            usr=session.get("user"))
-    
-    
+  
+  
+@app.route("/quiz/goals", methods=["GET", "POST"])
+def goals():
+    """ asks user their workout goals & stores it in session
+    """
+    if request.method == "POST":
+        # TODO: store goals in session
+        session["pumpGoal"] = False
+        session["energyGoal"] = False
+        session["enduranceGoal"] = False
+    # TODO: create qGoals.html
+    return -1
+
+
+# TODO: change to stimulant level
 @app.route("/quiz/caffeine", methods=["GET", "POST"])
 def caffeine():
     if request.method == "POST":
@@ -53,8 +78,8 @@ def caffeine():
     return render_template("qCaffeine.html",
                            usr=session.get("user"))
 
-# TODO: add goals question (pump/energy/endurance)
-    
+
+# <><><><><><><><><><><><> CUSTOMIZATION PAGES <><><><><><><><><><><><><>
 @app.route("/quiz/results", methods=["GET", "POST"])
 def results():
     """ displays quiz results. placeholder for future slider adjustment page.
@@ -64,9 +89,16 @@ def results():
                             weight=session.get("weight"),
                             caffeine=session.get("caffeine"))
 
-# TODO: add slider adjustment page
 
-# TODO: add product match page (database)
+@app.route("/quiz/customize", methods=["GET", "POST"])
+def customize():
+    """displays slider page
+
+    """
+    # TODO: create qCustomize.html
+    return -1
+
+# <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
 @app.route("/products")
 def products(): 
     # establish connection w/ database
@@ -85,6 +117,7 @@ def products():
     cur.close()
     conn.close()
 
+    # TODO: update products.html to be pretty & display ingredients
     return render_template("products.html",
                             products=products,
                             caffeine=session.get("Caffeine Blend")
