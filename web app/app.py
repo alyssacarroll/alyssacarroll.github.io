@@ -51,7 +51,7 @@ def weight():
     """
     if request.method == "POST":
         session["weight"] = request.form.get("weight", "").strip()
-        return redirect(url_for('caffeine'))
+        return redirect(url_for('stimulant'))
     return render_template("qWeight.html", 
                            usr=session.get("user"))
   
@@ -68,14 +68,13 @@ def goals():
     # TODO: create qGoals.html
     return -1
 
-
 # TODO: change to stimulant level
-@app.route("/quiz/caffeine", methods=["GET", "POST"])
-def caffeine():
+@app.route("/quiz/stimulant", methods=["GET", "POST"])
+def stimulant():
     if request.method == "POST":
-        session["caffeine"] = request.form.get("caffeine", "").strip()
+        session["stimulant"] = request.form.get("stimulant", "").strip()
         return redirect(url_for('results'))
-    return render_template("qCaffeine.html",
+    return render_template("qStimulant.html",
                            usr=session.get("user"))
 
 
@@ -87,7 +86,7 @@ def results():
     return render_template("qResults.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
-                            caffeine=session.get("caffeine"))
+                            stimulant=session.get("stimulant"))
 
 
 @app.route("/quiz/customize", methods=["GET", "POST"])
@@ -120,7 +119,7 @@ def products():
     # TODO: update products.html to be pretty & display ingredients
     return render_template("products.html",
                             products=products,
-                            caffeine=session.get("Caffeine Blend")
+                            caffeine=session.get("stimulant")
     )
 
 if __name__ == "__main__":

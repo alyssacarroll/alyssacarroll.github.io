@@ -3,16 +3,23 @@
 {% block title %}Products{% endblock %}
 
 {% block content %}
-    <h1>Product</h1>
+    <h1>Products</h1>
 
     {% if products %}
         {% for p in products %}
+
             {% if p["Caffeine Blend"] is not none and p["Caffeine Blend"]|int == caffeine|int %}
-             <p>{{ p["Product Name"] }}</p>
+            <!-- TODO: Create Card Container that holds each product -->
+             <p>{{ p["Product Name"] }} by {{ p["Brand Name"] }}</p>
+             <p style="font-size: 12px;"> Ingredients: <i>{{ p["Other Ingredients"] }}</i></p>
+             <br>
             {% endif %}
+            
         {% endfor %}
     {% else %}
-        <p>No product found.</p>
+        <p>No product found with those specifications.</p>
+        <p> Here are similar products:</p>
+        <!-- TODO: add products that are similar to the user's preferences -->
     {% endif %}
 
 {% endblock %}
