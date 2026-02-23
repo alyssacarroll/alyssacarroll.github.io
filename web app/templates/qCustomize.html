@@ -15,14 +15,14 @@
     <div class="card slider">
         <label for="creatine" class="form-label">Creatine (g)</label>
         <div class="d-flex justify-content-between mb-2"><small>0 g</small><small>1.5 g</small></div>
-        <input type="range" class="form-range" min="0" max="1.5" step="0.1" id="custom_creatine" value="0">
-        <div class="mb-3"><small id="creatine_value">0 g</small></div>
+        <input type="range" class="form-range" min="0" max="1.5" step="0.1" id="custom_creatine" value="{{ creatine / 1000 }}">
+        <div class="mb-3"><small id="creatine_value">{{ (creatine / 1000) | int }} g</small></div>
     </div>
 
     <div class="card slider">
         <label for="beta_alanine" class="form-label">Beta-Alanine (g)</label>
         <div class="d-flex justify-content-between mb-2"><small>0 g</small><small>6.4 g</small></div>
-        <input type="range" class="form-range" min="0" max="6.4" step="0.1" id="custom_beta_alanine" value="0">
+        <input type="range" class="form-range" min="0" max="6.4" step="0.1" id="custom_betaAlanine" value="0">
         <div class="mb-3"><small id="beta_alanine_value">0 g</small></div>
     </div>
 

@@ -1,3 +1,5 @@
+from unittest import case
+
 from flask import Flask, redirect, url_for, render_template, request, session
 import mysql.connector
 
@@ -78,11 +80,16 @@ def stimulant():
 def results():
     """ displays quiz results. placeholder for future slider adjustment page.
     """
+    caffeine, beta_alanine, creatine = calculate_ingredient_amounts()
     return render_template("qResults.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
-                            stimulant=session.get("stimulant"))
-
+                            stimulant=session.get("stimulant"),
+                            caffeine=caffeine,
+                            beta_alanine=beta_alanine,
+                            creatine=creatine
+                            )
+                    
 
 @app.route("/quiz/customize", methods=["GET", "POST"])
 def customize():
@@ -91,11 +98,17 @@ def customize():
     """
     if request.method == "POST":
         session["custom_caffeine"] = request.form.get("custom_caffeine", "").strip()
+        session["custom_betaAlanine"] = request.form.get("custom_betaAlanine", "").strip()
+        session["custom_creatine"] = request.form.get("custom_creatine", "").strip()
         return redirect(url_for('products'))
+    caffeine, beta_alanine, creatine = calculate_ingredient_amounts()
     return render_template("qCustomize.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
-                            stimulant=session.get("stimulant"))
+                            stimulant=session.get("stimulant"),
+                            caffeine=caffeine,
+                            beta_alanine=beta_alanine,
+                            creatine=creatine)
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
 @app.route("/products")
@@ -121,5 +134,32 @@ def products():
                             caffeine=session.get("custom_caffeine")
     )
 
+
+def calculate_ingredient_amounts():
+    """ calculates ingredient amounts based on quiz responses and stores in session
+    
+    2-9 mg/kg caffeine, 3.2-6.4 g beta-alanine, 3-5 g creatine
+    """
+    kg = int(session.get("weight")) * 0.453592
+    
+    # initial calculations
+    caffeine     = int(kg * 5.5)
+    beta_alanine = int(kg * 4800)
+    creatine     = int(kg * 4000)
+    
+    # factoring in preferences
+    stim = session.get("stimulant")
+    match stim:
+        case "none":
+            caffeine = 0
+        case "low":
+            caffeine = int(kg * 2)
+        case "medium":
+            caffeine = int(kg * 5.5)
+        case "high":
+            caffeine = int(kg * 9)
+
+    
+    return caffeine, beta_alanine, creatine
 if __name__ == "__main__":
     app.run(debug=True)
