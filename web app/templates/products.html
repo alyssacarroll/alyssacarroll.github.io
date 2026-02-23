@@ -6,16 +6,29 @@
     <h1>Products</h1>
 
     {% if products %}
+        <div class="row g-4"> 
         {% for p in products %}
 
             {% if p["Caffeine Blend"] is not none and p["Caffeine Blend"]|int == caffeine|int %}
             <!-- TODO: Create Card Container that holds each product -->
-             <p>{{ p["Product Name"] }} by {{ p["Brand Name"] }}</p>
-             <p style="font-size: 12px;"> Ingredients: <i>{{ p["Other Ingredients"] }}</i></p>
-             <br>
+                <div class="col-md-6 col-lg-4">
+                <!-- card structure from Bootstrap -->
+                 <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ p["Product Name"] }}</h5>
+                        <p class="card-subtitle mb-3 text-muted">{{ p["Brand Name"] }}</p>
+                        <p class="card-text small">
+                            <strong>Ingredients:</strong><br>
+                            <i>{{ p["Other Ingredients"] }}</i>
+                        </p>
+                    </div>
+                 </div>
+                </div>
             {% endif %}
             
+            
         {% endfor %}
+        </div>
     {% else %}
         <p>No product found with those specifications.</p>
         <p> Here are similar products:</p>
