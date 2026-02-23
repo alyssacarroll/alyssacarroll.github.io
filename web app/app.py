@@ -96,7 +96,7 @@ def customize():
     """
     if request.method == "POST":
         session["custom_caffeine"] = request.form.get("custom_caffeine", "").strip()
-        return redirect(url_for('results'))
+        return redirect(url_for('products'))
     return render_template("qCustomize.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
@@ -121,10 +121,9 @@ def products():
     cur.close()
     conn.close()
 
-    # TODO: update products.html to be pretty & display ingredients
     return render_template("products.html",
                             products=products,
-                            caffeine=session.get("stimulant")
+                            caffeine=session.get("custom_caffeine")
     )
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@
 <div class="row g-4">
     {% for p in products %}
 
-    {% if p["Caffeine Blend"] is not none and p["Caffeine Blend"]|int == caffeine|int %}
+    {% if p["Caffeine Blend"]|int == caffeine|int %}
 
     <div class="col-md-6 col-lg-4">
         <!-- card structure from Bootstrap -->
@@ -24,9 +24,10 @@
                     <div>Calories: {{ p["Calories"] }}</div>
                     {% endif %}
 
-                    {% if p["Caffeine Blend"] %}
+                    <!-- TODO: find out why not displaying caffeine????-->
+                    <!-- {% if p["Caffeine Blend"] %} -->
                     <div>Caffeine Blend: {{ p["Caffeine Blend"] }}mg</div>
-                    {% endif %}
+                    <!-- {% endif %} -->
 
                     <div>Other Ingredients:</div>
                     <i class="ingredients-list text-muted" style="font-size: small;">
