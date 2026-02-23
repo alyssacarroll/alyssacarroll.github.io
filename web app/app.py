@@ -94,8 +94,13 @@ def customize():
     """displays slider page
 
     """
-    # TODO: create qCustomize.html
-    return -1
+    if request.method == "POST":
+        session["custom_caffeine"] = request.form.get("custom_caffeine", "").strip()
+        return redirect(url_for('results'))
+    return render_template("qCustomize.html",
+                            usr=session.get("user"),
+                            weight=session.get("weight"),
+                            stimulant=session.get("stimulant"))
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
 @app.route("/products")

@@ -3,36 +3,48 @@
 {% block title %}Products{% endblock %}
 
 {% block content %}
-    <h1>Products</h1>
+<h1>Products</h1>
 
-    {% if products %}
-        <div class="row g-4"> 
-        {% for p in products %}
+{% if products %}
+<div class="row g-4">
+    {% for p in products %}
 
-            {% if p["Caffeine Blend"] is not none and p["Caffeine Blend"]|int == caffeine|int %}
-            <!-- TODO: Create Card Container that holds each product -->
-                <div class="col-md-6 col-lg-4">
-                <!-- card structure from Bootstrap -->
-                 <div class="card h-100 shadow-sm">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ p["Product Name"] }}</h5>
-                        <p class="card-subtitle mb-3 text-muted">{{ p["Brand Name"] }}</p>
-                        <p class="card-text small">
-                            <strong>Ingredients:</strong><br>
-                            <i>{{ p["Other Ingredients"] }}</i>
-                        </p>
-                    </div>
-                 </div>
+    {% if p["Caffeine Blend"] is not none and p["Caffeine Blend"]|int == caffeine|int %}
+
+    <div class="col-md-6 col-lg-4">
+        <!-- card structure from Bootstrap -->
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-start">
+                <h5 class="card-title">{{ p["Product Name"] }}</h5>
+                <p class="card-subtitle mb-3 text-muted">{{ p["Brand Name"] }}</p>
+                <div class="card-text small ingredients">
+                    <strong>Ingredients:</strong>
+
+                    {% if p["Calories"] %}
+                    <div>Calories: {{ p["Calories"] }}</div>
+                    {% endif %}
+
+                    {% if p["Caffeine Blend"] %}
+                    <div>Caffeine Blend: {{ p["Caffeine Blend"] }}mg</div>
+                    {% endif %}
+
+                    <div>Other Ingredients:</div>
+                    <i class="ingredients-list text-muted" style="font-size: small;">
+                        {{ p["Other Ingredients"] }}
+                    </i>
+
                 </div>
-            {% endif %}
-            
-            
-        {% endfor %}
+            </div>
         </div>
-    {% else %}
-        <p>No product found with those specifications.</p>
-        <p> Here are similar products:</p>
-        <!-- TODO: add products that are similar to the user's preferences -->
+    </div>
     {% endif %}
+
+    {% endfor %}
+</div>
+{% else %}
+<p>No product found with those specifications.</p>
+<p> Here are similar products:</p>
+<!-- TODO: add products that are similar to the user's preferences -->
+{% endif %}
 
 {% endblock %}

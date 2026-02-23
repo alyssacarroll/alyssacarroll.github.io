@@ -18,7 +18,7 @@
 
         .logo {
             height: auto;
-            font-size: 2.5rem;
+            font-size: 2rem;
         }
 
         .app-container {
@@ -33,6 +33,26 @@
             /* center inner content horizontally */
             text-align: center;
             /* center inner text */
+        }
+
+        /* Tighten spacing for ingredient lists in product cards */
+        .ingredients {
+            line-height: 1.2;
+        }
+
+        .ingredients strong {
+            display: block;
+            margin-bottom: 0.15rem;
+        }
+
+        .ingredients > div {
+            margin: 0 0 0.1rem 0;
+            font-size: 0.95rem;
+        }
+
+        .ingredients .ingredients-list {
+            display: block;
+            margin-top: 0.1rem;
         }
     </style>
 

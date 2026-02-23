@@ -1,0 +1,11 @@
+{% extends "quiz_template.html" %}
+
+{% block content %}
+    <h2>Here are the ingredient recommendations based on your quiz results:</h2>
+
+    <form method="POST" action="/quiz/customize">
+    <label for="caffeine" class="form-label">Caffeine (mg)</label>
+    <input type="range" class="form-range" min="0" max="500" step="50" id="caffeine" value="{{ stimulant }}">
+
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+{% endblock %}
