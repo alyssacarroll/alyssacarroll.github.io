@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.secret_key = "key"
 
 DB_NAME = "dlsd_preworkout_products"
+TABLE_NAME = "preworkout"
 DB_PASSWORD = "password"
 
 
@@ -122,7 +123,7 @@ def products():
     )
     cur = conn.cursor(dictionary=True)  # cursor that collects data
 
-    cur.execute("SELECT * FROM preworkout_powders")
+    cur.execute("SELECT * FROM " + TABLE_NAME)  
     products = cur.fetchall()
 
     # close database connection
@@ -131,21 +132,25 @@ def products():
 
     return render_template("products.html",
                             products=products,
-                            caffeine=session.get("custom_caffeine")
+                            caffeine=session.get("custom_caffeine"),
+                            beta_alanine=session.get("custom_betaAlanine"),
+                            creatine=session.get("custom_creatine")
     )
 
+
+# <><><><><><><><><><><><> CALCULATIONS <><><><><><><><><><><><><><><>
 
 def calculate_ingredient_amounts():
     """ calculates ingredient amounts based on quiz responses and stores in session
     
-    2-9 mg/kg caffeine, 0.3 g beta-alanine, 0.03 g creatine
+    2-9 mg/kg caffeine, 0.03 g creatine, 0.3 g beta-alanine
     """
     kg = int(session.get("weight")) * 0.453592
     
     # initial calculations
-    caffeine     = int(kg * 5.5)
-    beta_alanine = 4800
-    creatine     = int(kg * 30)
+    caffeine     = int(kg * 5.5)    # mg
+    creatine     = kg * 0.03        # g
+    beta_alanine = 4.8              # g
     
     # factoring in preferences
     stim = session.get("stimulant")
