@@ -59,13 +59,11 @@ def goals():
     """ asks user their workout goals & stores it in session
     """
     if request.method == "POST":
-        # TODO: store goals in session
-        session["pumpGoal"] = False
-        session["energyGoal"] = False
-        session["focusGoal"] = False
-        session["enduranceGoal"] = False
+        session["pumpGoal"] = request.form.get("goal", "") == "pump"
+        session["energyGoal"] = request.form.get("goal", "") == "energy"
+        session["focusGoal"] = request.form.get("goal", "") == "focus"
+        session["enduranceGoal"] = request.form.get("goal", "") == "endurance"
         return redirect(url_for('stimulant'))
-    # TODO: create qGoals.html
     return render_template("qGoals.html",
                            usr=session.get("user"))
 
@@ -84,7 +82,7 @@ def stimulant():
 def results():
     """ displays quiz results. placeholder for future slider adjustment page.
     """
-    caffeine, beta_alanine, creatine = calculate_ingredient_amounts()
+    caffeine, beta_alanine, creatine = calculate_ingredient_weights()
     return render_template("qResults.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
@@ -105,7 +103,7 @@ def customize():
         session["custom_betaAlanine"] = request.form.get("custom_betaAlanine", "").strip()
         session["custom_creatine"] = request.form.get("custom_creatine", "").strip()
         return redirect(url_for('products'))
-    caffeine, beta_alanine, creatine = calculate_ingredient_amounts()
+    caffeine, beta_alanine, creatine = calculate_ingredient_weights()
     return render_template("qCustomize.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
@@ -143,31 +141,61 @@ def products():
 
 # <><><><><><><><><><><><> CALCULATIONS <><><><><><><><><><><><><><><>
 
-def calculate_ingredient_amounts():
+def calculate_ingredient_weights():
     """ calculates ingredient amounts based on quiz responses and stores in session
     
     2-9 mg/kg caffeine, 0.03 g creatine, 0.3 g beta-alanine
     """
+    # convert weight to kg
     kg = int(session.get("weight")) * 0.453592
     
     # initial calculations
-    caffeine     = int(kg * 5.5)    # mg
-    creatine     = round((kg * 0.03), 2)        # g
-    beta_alanine = 4.8              # g
-    
-    # factoring in preferences
+    caffeine         = 0                      
+    creatine         = 0                      
+    beta_alanine     = 0                      
+    agmatine_sulfate = 0                        
+    citrulline_malate= 0                        
+    l_citrulline     = 0                        
+    l_theanine       = 0                        
+    l_tyrosine       = 0                        
+    taurine          = 0                        
+    betaine          = 0                        
+                    
+    # factoring in goals
+    if session.get("pumpGoal"):
+        l_citrulline += 1           
+        agmatine_sulfate += 1       
+        citrulline_malate += 1     
+    if session.get("energyGoal"):
+        if stim == "none" or stim == "low":
+            creatine += 1               
+            beta_alanine += 1            
+        caffeine += 1    
+    if session.get("focusGoal"):
+        l_theanine += 1             
+        l_tyrosine += 1             
+        taurine += 1                
+    if session.get("enduranceGoal"):
+        beta_alanine += 1           
+    if session.get("strenghtGoal"):
+        creatine += 1               
+        l_citrulline += 1           
+        beta_alanine += 1           
+        betaine += 1 
+                       
+     # factoring in preferences
     stim = session.get("stimulant")
     match stim:
         case "none":
             caffeine = 0
         case "low":
-            caffeine = int(kg * 2)
+            caffeine += 1
         case "medium":
-            caffeine = int(kg * 5.5)
+            caffeine += 2
         case "high":
-            caffeine = int(kg * 9)
+            caffeine += 3
 
     
-    return caffeine, beta_alanine, creatine
+    return caffeine, beta_alanine, creatine, l_theanine, agmatine_sulfate
 if __name__ == "__main__":
     app.run(debug=True)
