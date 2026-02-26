@@ -82,14 +82,22 @@ def stimulant():
 def results():
     """ displays quiz results. placeholder for future slider adjustment page.
     """
-    caffeine, beta_alanine, creatine = calculate_ingredient_weights()
+    caffeine, beta_alanine, creatine, agmatine_sulfate, citrulline_malate, \
+           l_citrulline, l_theanine, l_tyrosine, taurine, betaine = calculate_ingredient_weights()
     return render_template("qResults.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
                             stimulant=session.get("stimulant"),
                             caffeine=caffeine,
                             beta_alanine=beta_alanine,
-                            creatine=creatine
+                            creatine=creatine,
+                            agmatine_sulfate=agmatine_sulfate,
+                            citrulline_malate=citrulline_malate,
+                            l_citrulline=l_citrulline,
+                            l_theanine=l_theanine,
+                            l_tyrosine=l_tyrosine,
+                            taurine=taurine,
+                            betaine=betaine
                             )
                     
 
@@ -103,14 +111,23 @@ def customize():
         session["custom_betaAlanine"] = request.form.get("custom_betaAlanine", "").strip()
         session["custom_creatine"] = request.form.get("custom_creatine", "").strip()
         return redirect(url_for('products'))
-    caffeine, beta_alanine, creatine = calculate_ingredient_weights()
+    caffeine, beta_alanine, creatine, agmatine_sulfate, citrulline_malate, \
+    l_citrulline, l_theanine, l_tyrosine, taurine, betaine = calculate_ingredient_weights()
     return render_template("qCustomize.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
                             stimulant=session.get("stimulant"),
                             caffeine=caffeine,
                             beta_alanine=beta_alanine,
-                            creatine=creatine)
+                            creatine=creatine,
+                            agmatine_sulfate=agmatine_sulfate,
+                            citrulline_malate=citrulline_malate,
+                            l_citrulline=l_citrulline,
+                            l_theanine=l_theanine,
+                            l_tyrosine=l_tyrosine,
+                            taurine=taurine,
+                            betaine=betaine
+                            )
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
 @app.route("/products")
@@ -150,9 +167,9 @@ def calculate_ingredient_weights():
     kg = int(session.get("weight")) * 0.453592
     
     # initial calculations
-    caffeine         = 0                      
+    caffeine         = 0                    
+    beta_alanine     = 0                        
     creatine         = 0                      
-    beta_alanine     = 0                      
     agmatine_sulfate = 0                        
     citrulline_malate= 0                        
     l_citrulline     = 0                        
@@ -183,7 +200,7 @@ def calculate_ingredient_weights():
         beta_alanine += 1           
         betaine += 1 
                        
-     # factoring in preferences
+    # factoring in preferences
     stim = session.get("stimulant")
     match stim:
         case "none":
@@ -195,7 +212,49 @@ def calculate_ingredient_weights():
         case "high":
             caffeine += 3
 
+    return caffeine, beta_alanine, creatine, agmatine_sulfate, citrulline_malate, \
+           l_citrulline, l_theanine, l_tyrosine, taurine, betaine
+           
+def calculate_ranges():
+    """ calculates ingredient ranges based on ingredient weights and stores in session
+        TODO: calculate ranges -- maybe split into different methods
+    """
+    caffeine_min = 0
+    caffeine_max = 0
     
-    return caffeine, beta_alanine, creatine, l_theanine, agmatine_sulfate
+    beta_alanine_min = 0
+    beta_alanine_max = 0
+    
+    creatine_min = 0
+    creatine_max= 0
+    
+    agmatine_sulfate_min = 0
+    agmatine_sulfate_max = 0
+    
+    citrulline_malate_min = 0
+    citrulline_malate_max = 0
+    
+    l_citrulline_min = 0
+    l_citrulline_max = 0
+    
+    l_theanine_min = 0
+    l_theanine_max = 0
+    
+    l_tyrosine_min = 0
+    l_tyrosine_max = 0
+    
+    taurine_min = 0
+    taurine_max = 0
+    
+    betaine_min = 0
+    betaine_max = 0
+    
+    return caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max, \
+           agmatine_sulfate_min, agmatine_sulfate_max, citrulline_malate_min, citrulline_malate_max, \
+           l_citrulline_min, l_citrulline_max, l_theanine_min, l_theanine_max, l_tyrosine_min, l_tyrosine_max, \
+           taurine_min, taurine_max, betaine_min, betaine_max
+           
+
+
 if __name__ == "__main__":
     app.run(debug=True)
