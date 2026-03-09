@@ -8,7 +8,6 @@
     <style>
         :root {
             --bg-color: #fcfaf6;
-            /* light neutral background — change this value to customize */
         }
 
         html,
@@ -168,10 +167,12 @@
 </head>
 
 <body>
-    <div class="logo">
-        <img class="logo-img" src="{{ url_for('static', filename='logo2.png') }}" alt="YNQ Logo">
-        YNQ PRE-WORKOUT
-    </div>
+    <nav>
+        <div class="logo">
+            <img class="logo-img" src="{{ url_for('static', filename='logo2.png') }}" alt="YNQ Logo">
+            YNQ
+        </div>
+    </nav>
 
     <div class="app-container">
         <div class="app-inner">

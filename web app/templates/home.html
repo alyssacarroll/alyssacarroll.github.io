@@ -6,59 +6,418 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <style>
-        html,
-        body {
-            height: 100%;
-        }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* remove default body margins that can cause offsets */
-        body {
-            margin: 0;
-        }
+    :root {
+      --black: #fcfaf6;
+      --offwhite: #2c2c28;
+      --accent: #8faa8b;
+      --accent-light: #dce8da;
+      --muted: #8a8a82;
+    }
 
-        .logo {
-            height: auto;
-            font-size: 1.5rem;
-            padding: 0.5rem;
-        }
+    body {
+      background: var(--black);
+      color: var(--offwhite);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-        .app-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* make container fill the viewport minus header space so we can vertically center */
-            min-height: calc(100vh - 4rem);
-            padding: 1rem;
-        }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
 
-        .app-inner {
-            max-width: 980px;
-            margin: 0 auto;
-            text-align: center;
-            /* lift the inner content higher above the exact center */
-            transform: translateY(-50%);
-            transition: transform 200ms ease;
-        }
-    </style>
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 3rem;
+      background: rgba(252,250,246,0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+
+    .nav-logo { 
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        text-decoration: none; 
+    }
+
+    .logo-icon {
+      width: 45px; height: 34px;
+      background: var(--accent);
+      border-radius: 4px;
+      display: grid; place-items: center;
+    }
+
+    .logo-icon svg { width: 22px; height: 22px; }
+
+    .nav-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.08em;
+      color: var(--offwhite);
+    }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #fcfaf6;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.55rem 1.4rem;
+      border-radius: 4px;
+      transition: opacity 0.2s;
+    }
+
+    .nav-cta:hover { opacity: 0.85; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 3rem 5rem;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -10%; right: -5%;
+      width: 55%; height: 130%;
+      background: linear-gradient(135deg, rgba(143,170,139,0.1) 0%, transparent 60%);
+      transform: skewX(-8deg);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.1s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4.5rem, 11vw, 10rem);
+      line-height: 0.92;
+      letter-spacing: 0.02em;
+      max-width: 14ch;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.25s forwards;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      -webkit-text-stroke: 1.5px var(--offwhite);
+      color: transparent;
+    }
+
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: rgba(44,44,40,0.55);
+      max-width: 38ch;
+      line-height: 1.6;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.4s forwards;
+    }
+
+    .hero-actions {
+      margin-top: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.55s forwards;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fcfaf6;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 1rem 2.4rem;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(143,170,139,0.35);
+    }
+
+    .btn-primary svg { width: 16px; height: 16px; }
+
+    .btn-ghost {
+      color: rgba(252,250,246,0.5);
+      font-size: 0.9rem;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+
+    .btn-ghost:hover { color: var(--offwhite); }
+
+    .hero-stats {
+      margin-top: 5rem;
+      display: flex;
+      gap: 3rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.7s forwards;
+    }
+
+    .stat { border-left: 2px solid var(--accent); padding-left: 1rem; }
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      background: var(--accent);
+      padding: 0.85rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee-track {
+      display: inline-flex;
+      animation: marquee 22s linear infinite;
+    }
+
+    .marquee-item {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      color: #fcfaf6;
+      padding: 0 2.5rem;
+    }
+
+    .marquee-dot {
+      display: inline-block;
+      width: 5px; height: 5px;
+      background: rgba(252,250,246,0.4);
+      border-radius: 50%;
+      vertical-align: middle;
+      margin: 0 1.5rem;
+    }
+
+    /* HOW IT WORKS */
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 6rem 3rem;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      letter-spacing: 0.04em;
+      max-width: 20ch;
+      line-height: 1;
+    }
+
+    .steps {
+      margin-top: 4rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5px;
+      background: rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .step {
+      background: var(--black);
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .step:hover { background: #f4f1eb; }
+
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      color: rgba(143,170,139,0.25);
+      line-height: 1;
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+    }
+
+    .step-icon {
+      width: 44px; height: 44px;
+      background: rgba(143,170,139,0.15);
+      border-radius: 8px;
+      display: grid; place-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .step-icon svg { width: 22px; height: 22px; stroke: var(--accent); }
+
+    .step h3 { font-size: 1rem; font-weight: 600; letter-spacing: 0.03em; margin-bottom: 0.6rem; }
+
+    .step p { font-size: 0.875rem; color: rgba(44,44,40,0.5); line-height: 1.6; }
+
+    /* CTA BANNER */
+    .cta-banner {
+      margin: 0 3rem 6rem;
+      background: var(--accent);
+      padding: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-banner::before {
+      content: 'YNQ';
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 14rem;
+      color: rgba(0,0,0,0.06);
+      position: absolute;
+      right: -1rem; bottom: -2rem;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .cta-banner h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      color: #fcfaf6;
+      letter-spacing: 0.04em;
+      max-width: 22ch;
+      line-height: 1.05;
+    }
+
+    .btn-dark {
+      background: #fcfaf6;
+      color: var(--offwhite);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 1rem 2.2rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    .btn-dark:hover { transform: translateY(-2px); opacity: 0.9; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid rgba(0,0,0,0.08);
+      padding: 2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.08em;
+    }
+
+    footer p { font-size: 0.78rem; color: var(--muted); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+  </style>
 
     <title>{% block title%}YNQ Pre-Workout{% endblock %}</title>
 </head>
 
-
-
 <body>
-    <h1 class="logo">YNQ Pre-Workout</h1>
-    <div class="app-container">
-        <div class="app-inner">
-            
-            <h1 style="margin-bottom: 1rem;">YNQ Pre-Workout</h1>
-            
-            <h3>Find the pre-workout that works for <u>you</u></h3>
-            {% block content %}
-            <a href='/quiz/name'> take quiz </a>
-            {% endblock %}
+    <nav>
+    <a href="/" class="nav-logo">
+        <img class="logo-icon" src="{{ url_for('static', filename='logo2.png') }}" alt="YNQ Logo">
+        <span class="nav-brand">YNQ</span>
+    </a>
+    </nav>
+
+    <section class="hero">
+        <p class="hero-eyebrow">Powered by DSLD Database</p>
+        <h1 class="hero-title">Find Your <em>Perfect</em> Pre-Workout</h1>
+        <p class="hero-sub">Answer a few questions, fine-tune your ingredients, and get matched to real products that actually fit your needs.</p>
+        <div class="hero-actions">
+            <a href="/quiz/name" class="btn-primary">
+            Take the Quiz
+            <!-- Right arrow icon -->
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <path d="M3 8h10M9 4l4 4-4 4"/> 
+            </svg>
+            </a>
+            <a href="#how-it-works" class="btn-ghost">How it works ↓</a>
         </div>
-    </div>
+    </section>
+
 </body>
 
 </html>
