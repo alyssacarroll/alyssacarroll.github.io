@@ -8,6 +8,11 @@
     <style>
         :root {
             --bg-color: #fcfaf6;
+            --black: #fcfaf6;
+            --offwhite: #2c2c28;
+            --accent: #8faa8b;
+            --accent-light: #dce8da;
+            --muted: #8a8a82;
         }
 
         html,
@@ -161,11 +166,11 @@
         }
 
         .form-range::-webkit-slider-thumb {
-            background-color: green;
+            background-color: #6eb17d !important;
         }
 
         .form-range::-moz-range-thumb {
-            background-color: green;
+            background-color: #539962 !important;
         }
 
         /* remove bootstrap blue glow */
@@ -178,7 +183,7 @@
         }
 
         .form-range::-webkit-slider-runnable-track {
-            background: linear-gradient(green, green) 0/0% 100% no-repeat, #dee2e6;
+            background: linear-gradient(--accent,--accent) 0/0% 100% no-repeat, #dee2e6 !important;
         }
 
         .form-range::-moz-range-track {

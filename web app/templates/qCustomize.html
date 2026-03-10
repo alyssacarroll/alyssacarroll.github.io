@@ -1,9 +1,10 @@
 {% extends "quiz_template.html" %}
 
 {% block content %}
-    <h2 style="font-size: 1.5rem; padding-bottom: 10px;">Here are the ingredient recommendations based on your quiz results:</h2>
+<h2 style="font-size: 1.5rem; padding-bottom: 10px;">Here are the ingredient recommendations based on your quiz results:
+</h2>
 
-    <form method="POST" action="/quiz/customize">
+<form method="POST" action="/quiz/customize">
 
     <div class="card slider">
         <label for="caffeine" class="form-label">Caffeine (mg)</label>
@@ -13,44 +14,44 @@
     </div>
 
     <div class="card slider">
-        <label for="creatine" class="form-label">Creatine (g)</label>
-        <div class="d-flex justify-content-between mb-0"><small>0 g</small><small>15 g</small></div>
-        <input type="range" class="form-range" min="0" max="15" step="0.5" id="custom_creatine" name="custom_creatine" value="{{ (creatine_min / 1000 + creatine_max / 1000) / 2 }}">
-        <div class="mb-0"><small id="creatine_value">{{ (((creatine_min / 1000) + (creatine_max / 1000)) / 2 ) | round(1) }} g</small></div>
+        <label for="beta_alanine" class="form-label">Beta-Alanine (g)</label>
+        <div class="d-flex justify-content-between mb-0"><small>0 g</small><small>6.4 g</small></div>
+        <input type="range" class="form-range" min="0" max="6.4" step="0.1" id="custom_betaAlanine" name="custom_betaAlanine" value="{{ (beta_alanine_min + beta_alanine_max) / 2 }}">
+        <div class="mb-0"><small id="beta_alanine_value">{{ ((beta_alanine_min + beta_alanine_max) / 2 ) | round(1) }}
+                g</small></div>
     </div>
 
     <div class="card slider">
-        <label for="beta_alanine" class="form-label">Beta-Alanine (g)</label>
-        <div class="d-flex justify-content-between mb-0"><small>0 g</small><small>6.4 g</small></div>
-        <input type="range" class="form-range" min="0" max="6.4" step="0.1" id="custom_betaAlanine" name="custom_betaAlanine" value="{{ (beta_alanine_min / 1000 + beta_alanine_max / 1000) / 2 }}">
-        <div class="mb-0"><small id="beta_alanine_value">{{ (beta_alanine_min / 1000) | round(1) + (beta_alanine_max / 1000) | round(1) / 2 }} g</small></div>
+        <label for="creatine" class="form-label">Creatine (g)</label>
+        <div class="d-flex justify-content-between mb-0"><small>0 g</small><small>15 g</small></div>
+        <input type="range" class="form-range" min="0" max="15" step="0.5" id="custom_creatine" name="custom_creatine" value="{{ (creatine_min  + creatine_max) / 2 }}">
+        <div class="mb-0"><small id="creatine_value">{{ ((creatine_min + creatine_max) / 2 ) | round(1) }} g</small>
+        </div>
     </div>
-
-
 
     <button type="submit" class="btn btn-primary mt-3 btn-submit">Submit</button>
     <button type="reset" class="btn btn-primary mt-3 btn-submit" style="background-color: gray;" onclick="window.location.href='/quiz/customize'">Reset Values to Original</button>
-    </form>
+</form>
 
-    <!-- displays the values of the sliders in real time-->
-    <script>
-        const caffeineSlider = document.getElementById('custom_caffeine');
-        const betaAlanineSlider = document.getElementById('custom_betaAlanine');
-        const creatineSlider = document.getElementById('custom_creatine');
-        const caffeineValue = document.getElementById('caffeine_value');
-        const betaAlanineValue = document.getElementById('beta_alanine_value');
-        const creatineValue = document.getElementById('creatine_value');
+<!-- displays the values of the sliders in real time-->
+<script>
+    const caffeineSlider = document.getElementById('custom_caffeine');
+    const betaAlanineSlider = document.getElementById('custom_betaAlanine');
+    const creatineSlider = document.getElementById('custom_creatine');
+    const caffeineValue = document.getElementById('caffeine_value');
+    const betaAlanineValue = document.getElementById('beta_alanine_value');
+    const creatineValue = document.getElementById('creatine_value');
 
-        caffeineSlider.addEventListener('input', () => {
-            caffeineValue.textContent = caffeineSlider.value + ' mg';
-        });
+    caffeineSlider.addEventListener('input', () => {
+        caffeineValue.textContent = caffeineSlider.value + ' mg';
+    });
 
-        betaAlanineSlider.addEventListener('input', () => {
-            betaAlanineValue.textContent = betaAlanineSlider.value + ' g';
-        });
+    betaAlanineSlider.addEventListener('input', () => {
+        betaAlanineValue.textContent = betaAlanineSlider.value + ' g';
+    });
 
-        creatineSlider.addEventListener('input', () => {
-            creatineValue.textContent = creatineSlider.value + ' g';
-        })
-    </script>
+    creatineSlider.addEventListener('input', () => {
+        creatineValue.textContent = creatineSlider.value + ' g';
+    })
+</script>
 {% endblock %}

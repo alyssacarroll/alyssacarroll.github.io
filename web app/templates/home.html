@@ -2,11 +2,17 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     :root {
       --black: #fcfaf6;
@@ -37,32 +43,39 @@
     /* NAV */
     nav {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 1.25rem 3rem;
-      background: rgba(252,250,246,0.88);
+      background: rgba(252, 250, 246, 0.88);
       backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0,0,0,0.07);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.07);
     }
 
-    .nav-logo { 
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        text-decoration: none; 
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
     }
 
     .logo-icon {
-      width: 45px; height: 34px;
+      width: 45px;
+      height: 34px;
       background: var(--accent);
       border-radius: 4px;
-      display: grid; place-items: center;
+      display: grid;
+      place-items: center;
     }
 
-    .logo-icon svg { width: 22px; height: 22px; }
+    .logo-icon svg {
+      width: 22px;
+      height: 22px;
+    }
 
     .nav-brand {
       font-family: 'Bebas Neue', sans-serif;
@@ -84,7 +97,9 @@
       transition: opacity 0.2s;
     }
 
-    .nav-cta:hover { opacity: 0.85; }
+    .nav-cta:hover {
+      opacity: 0.85;
+    }
 
     /* HERO */
     .hero {
@@ -100,9 +115,11 @@
     .hero::after {
       content: '';
       position: absolute;
-      top: -10%; right: -5%;
-      width: 55%; height: 130%;
-      background: linear-gradient(135deg, rgba(143,170,139,0.1) 0%, transparent 60%);
+      top: -10%;
+      right: -5%;
+      width: 55%;
+      height: 130%;
+      background: linear-gradient(135deg, rgba(143, 170, 139, 0.1) 0%, transparent 60%);
       transform: skewX(-8deg);
       pointer-events: none;
     }
@@ -120,7 +137,7 @@
 
     .hero-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(4.5rem, 11vw, 10rem);
+      font-size: clamp(4rem, 8vw, 7rem);
       line-height: 0.92;
       letter-spacing: 0.02em;
       max-width: 14ch;
@@ -138,7 +155,7 @@
       margin-top: 2rem;
       font-size: 1.1rem;
       font-weight: 300;
-      color: rgba(44,44,40,0.55);
+      color: rgba(44, 44, 40, 0.55);
       max-width: 38ch;
       line-height: 1.6;
       opacity: 0;
@@ -173,20 +190,34 @@
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(143,170,139,0.35);
+      box-shadow: 0 8px 30px rgba(143, 170, 139, 0.35);
+      background-color: #aebfac;
     }
 
-    .btn-primary svg { width: 16px; height: 16px; }
+    .btn-primary:active,
+    .btn-primary:focus {
+      background: var(--accent) !important;
+      color: #fcfaf6 !important;
+      outline: none !important;
+      box-shadow: 0 4px 15px rgba(143, 170, 139, 0.4) !important;
+    }
+
+    .btn-primary svg {
+      width: 16px;
+      height: 16px;
+    }
 
     .btn-ghost {
-      color: rgba(252,250,246,0.5);
+      color: rgba(252, 250, 246, 0.5);
       font-size: 0.9rem;
       text-decoration: none;
       letter-spacing: 0.02em;
       transition: color 0.2s;
     }
 
-    .btn-ghost:hover { color: var(--offwhite); }
+    .btn-ghost:hover {
+      color: var(--offwhite);
+    }
 
     .hero-stats {
       margin-top: 5rem;
@@ -197,7 +228,10 @@
       animation: fadeUp 0.7s 0.7s forwards;
     }
 
-    .stat { border-left: 2px solid var(--accent); padding-left: 1rem; }
+    .stat {
+      border-left: 2px solid var(--accent);
+      padding-left: 1rem;
+    }
 
     .stat-num {
       font-family: 'Bebas Neue', sans-serif;
@@ -238,8 +272,9 @@
 
     .marquee-dot {
       display: inline-block;
-      width: 5px; height: 5px;
-      background: rgba(252,250,246,0.4);
+      width: 5px;
+      height: 5px;
+      background: rgba(252, 250, 246, 0.4);
       border-radius: 50%;
       vertical-align: middle;
       margin: 0 1.5rem;
@@ -274,8 +309,8 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 1.5px;
-      background: rgba(0,0,0,0.08);
-      border: 1px solid rgba(0,0,0,0.08);
+      background: rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.08);
     }
 
     .step {
@@ -285,30 +320,48 @@
       transition: background 0.3s;
     }
 
-    .step:hover { background: #f4f1eb; }
+    .step:hover {
+      background: #f4f1eb;
+    }
 
     .step-num {
       font-family: 'Bebas Neue', sans-serif;
       font-size: 4rem;
-      color: rgba(143,170,139,0.25);
+      color: rgba(143, 170, 139, 0.25);
       line-height: 1;
       position: absolute;
-      top: 1.5rem; right: 1.5rem;
+      top: 1.5rem;
+      right: 1.5rem;
     }
 
     .step-icon {
-      width: 44px; height: 44px;
-      background: rgba(143,170,139,0.15);
+      width: 44px;
+      height: 44px;
+      background: rgba(143, 170, 139, 0.15);
       border-radius: 8px;
-      display: grid; place-items: center;
+      display: grid;
+      place-items: center;
       margin-bottom: 1.5rem;
     }
 
-    .step-icon svg { width: 22px; height: 22px; stroke: var(--accent); }
+    .step-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--accent);
+    }
 
-    .step h3 { font-size: 1rem; font-weight: 600; letter-spacing: 0.03em; margin-bottom: 0.6rem; }
+    .step h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      margin-bottom: 0.6rem;
+    }
 
-    .step p { font-size: 0.875rem; color: rgba(44,44,40,0.5); line-height: 1.6; }
+    .step p {
+      font-size: 0.875rem;
+      color: rgba(44, 44, 40, 0.5);
+      line-height: 1.6;
+    }
 
     /* CTA BANNER */
     .cta-banner {
@@ -328,9 +381,10 @@
       content: 'YNQ';
       font-family: 'Bebas Neue', sans-serif;
       font-size: 14rem;
-      color: rgba(0,0,0,0.06);
+      color: rgba(0, 0, 0, 0.06);
       position: absolute;
-      right: -1rem; bottom: -2rem;
+      right: -1rem;
+      bottom: -2rem;
       line-height: 1;
       pointer-events: none;
     }
@@ -359,11 +413,14 @@
       transition: transform 0.2s, opacity 0.2s;
     }
 
-    .btn-dark:hover { transform: translateY(-2px); opacity: 0.9; }
+    .btn-dark:hover {
+      transform: translateY(-2px);
+      opacity: 0.9;
+    }
 
     /* FOOTER */
     footer {
-      border-top: 1px solid rgba(0,0,0,0.08);
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
       padding: 2rem 3rem;
       display: flex;
       align-items: center;
@@ -378,45 +435,61 @@
       letter-spacing: 0.08em;
     }
 
-    footer p { font-size: 0.78rem; color: var(--muted); }
+    footer p {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes marquee {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
     }
   </style>
 
-    <title>{% block title%}YNQ Pre-Workout{% endblock %}</title>
+  <title>{% block title%}YNQ Pre-Workout{% endblock %}</title>
 </head>
 
 <body>
-    <nav>
+  <nav>
     <a href="/" class="nav-logo">
-        <img class="logo-icon" src="{{ url_for('static', filename='logo2.png') }}" alt="YNQ Logo">
-        <span class="nav-brand">YNQ</span>
+      <img class="logo-icon" src="{{ url_for('static', filename='logo2.png') }}" alt="YNQ Logo">
+      <span class="nav-brand">YNQ</span>
     </a>
-    </nav>
+  </nav>
 
-    <section class="hero">
-        <p class="hero-eyebrow">Powered by DSLD Database</p>
-        <h1 class="hero-title">Find Your <em>Perfect</em> Pre-Workout</h1>
-        <p class="hero-sub">Answer a few questions, fine-tune your ingredients, and get matched to real products that actually fit your needs.</p>
-        <div class="hero-actions">
-            <a href="/quiz/name" class="btn-primary">
-            Take the Quiz
-            <!-- Right arrow icon -->
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                <path d="M3 8h10M9 4l4 4-4 4"/> 
-            </svg>
-            </a>
-            <a href="#how-it-works" class="btn-ghost">How it works ↓</a>
-        </div>
-    </section>
+  <section class="hero">
+    <p class="hero-eyebrow">Powered by DSLD Database</p>
+    <h1 class="hero-title">Find Your <em>Perfect</em> Pre-Workout</h1>
+    <p class="hero-sub">Answer a few questions, fine-tune your ingredients, and get matched to real products that
+      actually fit your needs.</p>
+    <div class="hero-actions">
+      <a href="/quiz/name" class="btn-primary">
+        Take the Quiz
+        <!-- Right arrow icon -->
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M3 8h10M9 4l4 4-4 4" />
+        </svg>
+      </a>
+      <a href="#how-it-works" class="btn-ghost">How it works ↓</a>
+    </div>
+  </section>
 
 </body>
 

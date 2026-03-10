@@ -77,7 +77,7 @@ def goals():
 def stimulant():
     if request.method == "POST":
         session["stimulant"] = request.form.get("stimulant", "")
-        return redirect(url_for('customize'))
+        return redirect(url_for('results'))
     return render_template("qStimulant.html",
                            usr=session.get("user"))
 
@@ -90,8 +90,13 @@ def results():
     caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = calculate_ranges()
     return render_template("qResults.html",
                             usr=session.get("user"),
-                            weight=session.get("weight"),
+                            # weight=session.get("weight"),
                             stimulant=session.get("stimulant"),
+                            pumpGoal=session.get("pumpGoal"),
+                            energyGoal=session.get("energyGoal"),
+                            focusGoal=session.get("focusGoal"),
+                            enduranceGoal=session.get("enduranceGoal"),
+                            strengthGoal=session.get("strengthGoal"),
                             caffeine_min=caffeine_min,
                             caffeine_max=caffeine_max,
                             beta_alanine_min=beta_alanine_min,
@@ -160,6 +165,11 @@ def calculate_ingredient_weights():
     """
     
     stim = session.get("stimulant")
+    pumpGoal      = session.get("pumpGoal")
+    energyGoal    = session.get("energyGoal")
+    focusGoal     = session.get("focusGoal")
+    enduranceGoal = session.get("enduranceGoal")
+    strengthGoal  = session.get("strengthGoal")
     
     # initial calculations
     caffeine         = 0                    
@@ -174,22 +184,22 @@ def calculate_ingredient_weights():
     betaine          = 0                        
                     
     # factoring in goals
-    if session.get("pumpGoal"):
+    if pumpGoal:
         l_citrulline += 1           
         agmatine_sulfate += 1       
         citrulline_malate += 1     
-    if session.get("energyGoal"):
+    if energyGoal:
         if not (stim == "none" or stim == "low"):            
             caffeine += 1  
         creatine += 1               
         beta_alanine += 1  
-    if session.get("focusGoal"):
+    if focusGoal:
         l_theanine += 1             
         l_tyrosine += 1             
         taurine += 1                
-    if session.get("enduranceGoal"):
+    if enduranceGoal:
         beta_alanine += 1           
-    if session.get("strengthGoal"):
+    if strengthGoal:
         creatine += 1               
         l_citrulline += 1           
         beta_alanine += 1           
@@ -208,15 +218,13 @@ def calculate_ingredient_weights():
         case "any":
             caffeine += 0
 
-    return caffeine, beta_alanine, creatine, agmatine_sulfate, citrulline_malate, \
-           l_citrulline, l_theanine, l_tyrosine, taurine, betaine
+    return caffeine, beta_alanine, creatine
            
 def calculate_ranges():
     """ calculates ingredient ranges based on ingredient weights and stores in session
         TODO: calculate ranges -- maybe split into different methods
     """
-    caffeine, beta_alanine, creatine, agmatine_sulfate, citrulline_malate, \
-    l_citrulline, l_theanine, l_tyrosine, taurine, betaine = calculate_ingredient_weights()
+    caffeine, beta_alanine, creatine = calculate_ingredient_weights()
     
     # convert weight to kg
     # kg = int(session.get("weight")) * 0.453592
