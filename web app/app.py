@@ -31,7 +31,7 @@ def name():
     if request.method == "POST":                                # user submits name
         session["user"] = request.form.get("user", "").strip()  # get name from form and store in session
         session.permanent = True                                # make session permanent (lasts for 10 minutes)
-        return redirect(url_for('weight'))                      # redirect to weight question page
+        return redirect(url_for('goals'))                      # redirect to weight question page
     return render_template("qName.html", 
                            usr=session.get("user"))  
    
@@ -46,15 +46,15 @@ def sex():
     return -1
 
 
-@app.route("/quiz/weight", methods=["GET", "POST"])
-def weight():
-    """ asks user for weight and stores in session. redirects to results page.
-    """
-    if request.method == "POST":
-        session["weight"] = request.form.get("weight", "").strip()
-        return redirect(url_for('goals'))
-    return render_template("qWeight.html", 
-                           usr=session.get("user"))
+# @app.route("/quiz/weight", methods=["GET", "POST"])
+# def weight():
+#     """ asks user for weight and stores in session. redirects to results page.
+#     """
+#     if request.method == "POST":
+#         session["weight"] = request.form.get("weight", "").strip()
+#         return redirect(url_for('goals'))
+#     return render_template("qWeight.html", 
+#                            usr=session.get("user"))
   
   
 @app.route("/quiz/goals", methods=["GET", "POST"])
@@ -62,10 +62,12 @@ def goals():
     """ asks user their workout goals & stores it in session
     """
     if request.method == "POST":
-        session["pumpGoal"] = request.form.get("goal", "") == "pump"
-        session["energyGoal"] = request.form.get("goal", "") == "energy"
-        session["focusGoal"] = request.form.get("goal", "") == "focus"
-        session["enduranceGoal"] = request.form.get("goal", "") == "endurance"
+        selected_goals = request.form.getlist("goal")
+        session["pumpGoal"]      = "pump"      in selected_goals
+        session["energyGoal"]    = "energy"    in selected_goals
+        session["focusGoal"]     = "focus"     in selected_goals
+        session["enduranceGoal"] = "endurance" in selected_goals
+        session["strengthGoal"]  = "strength"  in selected_goals
         return redirect(url_for('stimulant'))
     return render_template("qGoals.html",
                            usr=session.get("user"))
@@ -75,7 +77,7 @@ def goals():
 def stimulant():
     if request.method == "POST":
         session["stimulant"] = request.form.get("stimulant", "")
-        return redirect(url_for('results'))
+        return redirect(url_for('customize'))
     return render_template("qStimulant.html",
                            usr=session.get("user"))
 
@@ -85,22 +87,17 @@ def stimulant():
 def results():
     """ displays quiz results. placeholder for future slider adjustment page.
     """
-    caffeine, beta_alanine, creatine, agmatine_sulfate, citrulline_malate, \
-           l_citrulline, l_theanine, l_tyrosine, taurine, betaine = calculate_ingredient_weights()
+    caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = calculate_ranges()
     return render_template("qResults.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
                             stimulant=session.get("stimulant"),
-                            caffeine=caffeine,
-                            beta_alanine=beta_alanine,
-                            creatine=creatine,
-                            agmatine_sulfate=agmatine_sulfate,
-                            citrulline_malate=citrulline_malate,
-                            l_citrulline=l_citrulline,
-                            l_theanine=l_theanine,
-                            l_tyrosine=l_tyrosine,
-                            taurine=taurine,
-                            betaine=betaine
+                            caffeine_min=caffeine_min,
+                            caffeine_max=caffeine_max,
+                            beta_alanine_min=beta_alanine_min,
+                            beta_alanine_max=beta_alanine_max,
+                            creatine_min=creatine_min,
+                            creatine_max=creatine_max
                             )
                     
 
@@ -114,22 +111,17 @@ def customize():
         session["custom_betaAlanine"] = request.form.get("custom_betaAlanine", "").strip()
         session["custom_creatine"] = request.form.get("custom_creatine", "").strip()
         return redirect(url_for('products'))
-    caffeine, beta_alanine, creatine, agmatine_sulfate, citrulline_malate, \
-    l_citrulline, l_theanine, l_tyrosine, taurine, betaine = calculate_ingredient_weights()
+    caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max = calculate_ranges()
     return render_template("qCustomize.html",
                             usr=session.get("user"),
                             weight=session.get("weight"),
                             stimulant=session.get("stimulant"),
-                            caffeine=caffeine,
-                            beta_alanine=beta_alanine,
-                            creatine=creatine,
-                            agmatine_sulfate=agmatine_sulfate,
-                            citrulline_malate=citrulline_malate,
-                            l_citrulline=l_citrulline,
-                            l_theanine=l_theanine,
-                            l_tyrosine=l_tyrosine,
-                            taurine=taurine,
-                            betaine=betaine
+                            caffeine_min=caffeine_min,
+                            caffeine_max=caffeine_max,
+                            beta_alanine_min=beta_alanine_min,
+                            beta_alanine_max=beta_alanine_max,
+                            creatine_min=creatine_min,
+                            creatine_max=creatine_max
                             )
 
 # <><><><><><><><><><><><> PRODUCTS PAGE <><><><><><><><><><><><><><><>
@@ -187,17 +179,17 @@ def calculate_ingredient_weights():
         agmatine_sulfate += 1       
         citrulline_malate += 1     
     if session.get("energyGoal"):
-        if stim == "none" or stim == "low":
-            creatine += 1               
-            beta_alanine += 1            
-        caffeine += 1    
+        if not (stim == "none" or stim == "low"):            
+            caffeine += 1  
+        creatine += 1               
+        beta_alanine += 1  
     if session.get("focusGoal"):
         l_theanine += 1             
         l_tyrosine += 1             
         taurine += 1                
     if session.get("enduranceGoal"):
         beta_alanine += 1           
-    if session.get("strenghtGoal"):
+    if session.get("strengthGoal"):
         creatine += 1               
         l_citrulline += 1           
         beta_alanine += 1           
@@ -209,7 +201,7 @@ def calculate_ingredient_weights():
             caffeine = 0
         case "low":
             caffeine += 1
-        case "medium":
+        case "moderate":
             caffeine += 2
         case "high":
             caffeine += 3
@@ -227,28 +219,43 @@ def calculate_ranges():
     l_citrulline, l_theanine, l_tyrosine, taurine, betaine = calculate_ingredient_weights()
     
     # convert weight to kg
-    kg = int(session.get("weight")) * 0.453592
+    # kg = int(session.get("weight")) * 0.453592
     
     caffeine_min = 0
     caffeine_max = 0
     if caffeine == 1:
         caffeine_min = 50
-        caffeine_max = kg * 2
+        caffeine_max = 100
     elif caffeine == 2:
-        caffeine_min = kg * 2
-        caffeine_max = kg * 4
+        caffeine_min = 100
+        caffeine_max = 200
     elif caffeine == 3:
-        caffeine_min = kg * 4
-        caffeine_max = kg * 6
+        caffeine_min = 200
+        caffeine_max = 300
     elif caffeine == 4:
-        caffeine_min = kg * 6
-        caffeine_max = kg * 9
+        caffeine_min = 300
+        caffeine_max = 500
     
     beta_alanine_min = 0
     beta_alanine_max = 0
+    if beta_alanine == 1:
+        beta_alanine_min = 1
+        beta_alanine_max = 2.5
+    if beta_alanine == 2:
+        beta_alanine_min = 2.5
+        beta_alanine_max = 4.5
+    if beta_alanine == 3:
+        beta_alanine_min = 4.5
+        beta_alanine_max = 6.4
     
     creatine_min = 0
     creatine_max= 0
+    if creatine == 1:
+        creatine_min = 3
+        creatine_max = 5
+    if creatine == 2:
+        creatine_min = 5
+        creatine_max = 15
     
     agmatine_sulfate_min = 0
     agmatine_sulfate_max = 0
@@ -271,10 +278,7 @@ def calculate_ranges():
     betaine_min = 0
     betaine_max = 0
     
-    return caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max, \
-           agmatine_sulfate_min, agmatine_sulfate_max, citrulline_malate_min, citrulline_malate_max, \
-           l_citrulline_min, l_citrulline_max, l_theanine_min, l_theanine_max, l_tyrosine_min, l_tyrosine_max, \
-           taurine_min, taurine_max, betaine_min, betaine_max
+    return caffeine_min, caffeine_max, beta_alanine_min, beta_alanine_max, creatine_min, creatine_max
            
 
 
