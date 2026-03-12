@@ -183,11 +183,30 @@
         }
 
         .form-range::-webkit-slider-runnable-track {
-            background: linear-gradient(--accent,--accent) 0/0% 100% no-repeat, #dee2e6 !important;
+            background: linear-gradient(--accent, --accent) 0/0% 100% no-repeat, #dee2e6 !important;
         }
 
         .form-range::-moz-range-track {
             background: #dee2e6;
+        }
+
+        /* back button */
+        .btn-back {
+            color: inherit;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            width: fit-content;
+            margin-top: -0.5rem;
+        }
+
+        .btn-back:hover{
+            transform: translateY(-2px);
+            text-shadow: #242422;
+            color:#535350;
+            /* text-decoration: underline; */
         }
     </style>
 
